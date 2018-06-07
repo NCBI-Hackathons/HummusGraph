@@ -27,7 +27,7 @@ if [[ "$#" == 0 ]]; then Usage; fi # Display the usage message and exit
 #   Dependencies
 #   Note: this path needs to be changed
 MINIMAP2=$1
-export PATH=${MINIMAP2}:${PATH}
+#export PATH=${MINIMAP2}:${PATH}
 
 #   User provided arguments
 REF=$2
@@ -35,5 +35,8 @@ ASSEMBLY_FA=$3
 OUT_DIR=$4
 OUT_PREFIX=$5
 
+#   Check if output directory exists, if not make one
+mkdir -p ${OUT_DIR}
+
 #   Align using minimap2
-minimap2 -aLx asm5 "${REF}" "${ASSEMBLY_FA}" > "${OUT_DIR}"/"${OUT_PREFIX}".sam
+${MINIMAP2} -aLx asm5 "${REF}" "${ASSEMBLY_FA}" > "${OUT_DIR}"/"${OUT_PREFIX}".sam
