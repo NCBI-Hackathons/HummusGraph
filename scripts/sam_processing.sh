@@ -49,14 +49,13 @@ OUT_DIR="$5"
 
 function makeOutDir() {
     local out_dir="$1"
-    #   Check if out directory exists, if not make it
-    #   Make subdirectories within SAMtools
-    mkdir -p "${out_dir}"/SAM_Processing/SAMtools/Statistics/Raw_SAM_Stats \
-             "${out_dir}"/SAM_Processing/SAMtools/Statistics/Sorted_BAM_Stats \
-             "${out_dir}"/SAM_Processing/SAMtools/Statistics/Finished_BAM_Stats \
-             "${out_dir}"/SAM_Processing/SAMtools/Intermediates/Sorted \
-             "${out_dir}"/SAM_Processing/SAMtools/Intermediates/Fixed_Header \
-             "${out_dir}"/SAM_Processing/SAMtools/Intermediates/Raw_BAM
+    #   Check if out directories exists, if not make it
+    mkdir -p "${out_dir}"/SAM_Processing/Statistics/Raw_SAM_Stats \
+             "${out_dir}"/SAM_Processing/Statistics/Sorted_BAM_Stats \
+             "${out_dir}"/SAM_Processing/Statistics/Finished_BAM_Stats \
+             "${out_dir}"/SAM_Processing/Intermediates/Sorted \
+             "${out_dir}"/SAM_Processing/Intermediates/Fixed_Header \
+             "${out_dir}"/SAM_Processing/Intermediates/Raw_BAM
 }
 
 export -f makeOutDir
@@ -64,39 +63,39 @@ export -f makeOutDir
 function samProcessing() {
     local sam_file="$1"
     local reference="$2"
-    local out="$3"
+    local out_dir="$3"
     local project="$4"
     #   Sample name, taken from full name of SAM file
     sampleName=$(basename "${sam_file}" .sam)
     #   Remove unnecessary information from @PG line
     #   Could use sed's in-place option, but that fails on some systems
     #   This method bypasses that
-    sed 's/-R.*$//' "${sam_file}" > "${out}"/SAM_Processing/Intermediates/Fixed_Header/"${sampleName}"_fixed_header.sam
+    sed 's/-R.*$//' "${sam_file}" > "${out_dir}"/SAM_Processing/Intermediates/Fixed_Header/"${sampleName}"_fixed_header.sam
     #   Generate a sorted BAM file
-    samtools view -bhT "${reference}" "${out}"/SAM_Processing/Intermediates/Fixed_Header/"${sampleName}"_fixed_header.sam > "${out}/Intermediates/Raw_BAM/${sampleName}_raw.bam"
+    samtools view -bhT "${reference}" "${out_dir}"/SAM_Processing/Intermediates/Fixed_Header/"${sampleName}"_fixed_header.sam > "${out_dir}/Intermediates/Raw_BAM/${sampleName}_raw.bam"
     #   Create alignment statistics for the raw BAM file
-    samtools flagstat "${out}/SAM_Processing/Intermediates/Raw_BAM/${sampleName}_raw.bam" > "${out}/SAM_Processing/Statistics/Raw_SAM_Stats/${sampleName}_raw.txt"
+    samtools flagstat "${out_dir}/SAM_Processing/Intermediates/Raw_BAM/${sampleName}_raw.bam" > "${out_dir}/SAM_Processing/Statistics/Raw_SAM_Stats/${sampleName}_raw.txt"
     #   Sort the raw BAM file
-    samtools sort "${out}/SAM_Processing/Intermediates/Raw_BAM/${sampleName}_raw.bam" > "${out}/SAM_Processing/Intermediates/Sorted/${sampleName}_sorted.bam"
+    samtools sort "${out_dir}/SAM_Processing/Intermediates/Raw_BAM/${sampleName}_raw.bam" > "${out_dir}/SAM_Processing/Intermediates/Sorted/${sampleName}_sorted.bam"
     #   Create alignment statistics for the sorted BAM file
-    samtools stats "${out}/SAM_Processing/Intermediates/Sorted/${sampleName}_sorted.bam" > "${out}/SAM_Processing/Statistics/Sorted_BAM_Stats/${sampleName}_sorted.txt"
+    samtools stats "${out_dir}/SAM_Processing/Intermediates/Sorted/${sampleName}_sorted.bam" > "${out_dir}/SAM_Processing/Statistics/Sorted_BAM_Stats/${sampleName}_sorted.txt"
     #   Deduplicate the sorted BAM file
-    samtools rmdup "${out}/SAM_Processing/Intermediates/Sorted/${sampleName}_sorted.bam" "${out}/SAM_Processing/${sampleName}.bam"
+    samtools rmdup "${out_dir}/SAM_Processing/Intermediates/Sorted/${sampleName}_sorted.bam" "${out_dir}/SAM_Processing/${sampleName}.bam"
     #   Create alignment statistics using SAMTools
-    samtools flagstat "${out}/SAM_Processing/${sampleName}.bam" > "${out}/SAM_Processing/Statistics/Finished_BAM_Stats/${sampleName}_finished.txt"
+    samtools flagstat "${out_dir}/SAM_Processing/${sampleName}.bam" > "${out_dir}/SAM_Processing/Statistics/Finished_BAM_Stats/${sampleName}_finished.txt"
 
     #   Add the data from flagstat to the summary file
-    local num_reads=$(head -n 1 "${out}/SAM_Processing/Statistics/Finished_BAM_Stats/${sampleName}_finished.txt" | cut -f 1 -d " ")
-    local percent_mapped=$(grep "%" "${out}/SAM_Processing/Statistics/Finished_BAM_Stats/${sampleName}_finished.txt" | head -n 1 | cut -f 2 -d "(" | cut -f 1 -d " ")
-    local percent_paired=$(grep "%" "${out}/SAM_Processing/Statistics/Finished_BAM_Stats/${sampleName}_finished.txt" | head -n 2 | tail -n 1 | cut -f 2 -d "(" | cut -f 1 -d " ")
-    local percent_singleton=$(grep "%" "${out}/SAM_Processing/Statistics/Finished_BAM_Stats/${sampleName}_finished.txt" | tail -n 1 | cut -f 2 -d "(" | cut -f 1 -d " ")
-    local num_split_chr=$(tail -n 2 "${out}/SAM_Processing/Statistics/Finished_BAM_Stats/${sampleName}_finished.txt" | head -n 1 | cut -f 1 -d " ")
+    local num_reads=$(head -n 1 "${out_dir}/SAM_Processing/Statistics/Finished_BAM_Stats/${sampleName}_finished.txt" | cut -f 1 -d " ")
+    local percent_mapped=$(grep "%" "${out_dir}/SAM_Processing/Statistics/Finished_BAM_Stats/${sampleName}_finished.txt" | head -n 1 | cut -f 2 -d "(" | cut -f 1 -d " ")
+    local percent_paired=$(grep "%" "${out_dir}/SAM_Processing/Statistics/Finished_BAM_Stats/${sampleName}_finished.txt" | head -n 2 | tail -n 1 | cut -f 2 -d "(" | cut -f 1 -d " ")
+    local percent_singleton=$(grep "%" "${out_dir}/SAM_Processing/Statistics/Finished_BAM_Stats/${sampleName}_finished.txt" | tail -n 1 | cut -f 2 -d "(" | cut -f 1 -d " ")
+    local num_split_chr=$(tail -n 2 "${out_dir}/SAM_Processing/Statistics/Finished_BAM_Stats/${sampleName}_finished.txt" | head -n 1 | cut -f 1 -d " ")
     local percent_split_chr=$(echo "${num_split_chr}/${num_reads}" | bc -l)
-    echo -e "${sampleName}\t${num_reads}\t${percent_mapped}\t${percent_paired}\t${percent_singleton}\t${percent_split_chr}" >> "${out}/SAM_Processing/Statistics/${project}_mapping_summary_unfinished.txt"
+    echo -e "${sampleName}\t${num_reads}\t${percent_mapped}\t${percent_paired}\t${percent_singleton}\t${percent_split_chr}" >> "${out_dir}/SAM_Processing/Statistics/${project}_mapping_summary_unfinished.txt"
     #   Create an index for our BAM file
-    samtools index "${out}/SAM_Processing/${sampleName}.bam"
+    samtools index "${out_dir}/SAM_Processing/${sampleName}.bam"
     #   Rename the index file
-    mv "${out}/SAM_Processing/${sampleName}.bam.bai" "${out}/SAM_Processing/${sampleName}.bai"
+    mv "${out_dir}/SAM_Processing/${sampleName}.bam.bai" "${out_dir}/SAM_Processing/${sampleName}.bai"
 }
 
 #   Export the function
@@ -110,17 +109,17 @@ function main() {
     local project="$4" # What do we call our results?
     makeOutDir "${out_dir}" # Make our outdirectories
     #   Create the header for the mapping stats summary file
-    echo -e "Sample name\tTotal reads\tPercent mapped\tPercent paired\tPercent singletons\tFraction with mate mapped to different chr" > "${out_dir}/SAM_Processing/SAMtools/Statistics/${project}_mapping_summary_unfinished.txt"
+    echo -e "Sample name\tTotal reads\tPercent mapped\tPercent paired\tPercent singletons\tFraction with mate mapped to different chr" > "${out_dir}/SAM_Processing/Statistics/${project}_mapping_summary_unfinished.txt"
     #   Process our SAM files using SAMTools
     parallel samProcessing {} "${ref_seq}" "${out_dir}" "${project}" :::: "${sam_list}"
     #   Sort the mapping stats summary file
-    echo -e "Sample name\tTotal reads\tPercent mapped\tPercent paired\tPercent singletons\tFraction with mate mapped to different chr" > "${out_dir}/SAM_Processing/SAMtools/Statistics/${project}_mapping_summary.txt"
-    tail -n +2 "${out_dir}/SAM_Processing/SAMtools/Statistics/${project}_mapping_summary_unfinished.txt" | sort >> "${out_dir}/SAMtools/Statistics/${project}_mapping_summary.txt"
-    rm "${out_dir}/SAM_Processing/SAMtools/Statistics/${project}_mapping_summary_unfinished.txt"
+    echo -e "Sample name\tTotal reads\tPercent mapped\tPercent paired\tPercent singletons\tFraction with mate mapped to different chr" > "${out_dir}/SAM_Processing/Statistics/${project}_mapping_summary.txt"
+    tail -n +2 "${out_dir}/SAM_Processing/Statistics/${project}_mapping_summary_unfinished.txt" | sort >> "${out_dir}/SAM_Processing/Statistics/${project}_mapping_summary.txt"
+    rm "${out_dir}/SAM_Processing/Statistics/${project}_mapping_summary_unfinished.txt"
     #   Create a list of finished files
-    find "${out_dir}/SAM_Processing/SAMtools" -name "*.bam" | sort > "${out_dir}"/SAMtools/"${project}"_BAM_list.txt
+    find "${out_dir}/SAM_Processing" -name "*.bam" | sort > "${out_dir}"/SAMtools/"${project}"_BAM_list.txt
     #   Remove intermediate files
-    rm -rf "${out_dir}/SAM_Processing/SAMtools/Intermediates"
+    rm -rf "${out_dir}/SAM_Processing/Intermediates"
 }
 
 #   Export the function
