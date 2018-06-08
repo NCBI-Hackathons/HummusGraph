@@ -45,13 +45,12 @@ function makeOutDir() {
     local out_dir="$1"
     #   Check if out directory exists, if not make it
     #   Make subdirectories within SAMtools
-    mkdir -p "${out_dir}"/SAMtools \
-             "${out_dir}"/Statistics/Raw_SAM_Stats \
-             "${out_dir}"/Statistics/Sorted_BAM_Stats \
-             "${out_dir}"/Statistics/Finished_BAM_Stats \
-             "${out_dir}"/Intermediates/Sorted \
-             "${out_dir}"/Intermediates/Fixed_Header \
-             "${out_dir}"/Intermediates/Raw_BAM
+    mkdir -p "${out_dir}"/SAMtools/Statistics/Raw_SAM_Stats \
+             "${out_dir}"/SAMtools/Statistics/Sorted_BAM_Stats \
+             "${out_dir}"/SAMtools/Statistics/Finished_BAM_Stats \
+             "${out_dir}"/SAMtools/Intermediates/Sorted \
+             "${out_dir}"/SAMtools/Intermediates/Fixed_Header \
+             "${out_dir}"/SAMtools/Intermediates/Raw_BAM
 }
 
 export -f makeOutDir
