@@ -10,10 +10,10 @@ set -o pipefail
 
 function Usage() {
     echo -e "\
-Usage: ./sam_processing.sh [SAMTOOLS] [SAM_LIST] [REFERENCE] [PROJECT] [OUT_DIR] \n\
+Usage: ./sam_processing.sh [SAMTOOLS_DIR] [SAM_LIST] [REFERENCE] [PROJECT] [OUT_DIR] \n\
 \n\
 Where: \n\
-    1) [SAMTOOLS] is the full filepath to the executable script
+    1) [SAMTOOLS_DIR] is the full filepath to the directory containing samtools (i.e. /path/to/bin)
     2) [SAM_LIST] is a list of full filepaths to sam files
     3) [REFERENCE] is the full filepath to the reference.fa file
     4) [PROJECT] is the name of our project. This will get used to name summary statistic files.
@@ -32,8 +32,8 @@ export -f Usage
 if [[ "$#" == 0 ]]; then Usage; fi # Display the usage message and exit
 
 #   Dependencies
-SAMTOOLS="$1"
-#export PATH=${SAMTOOLS}:${PATH}
+SAMTOOLS_DIR="$1"
+export PATH=${SAMTOOLS_DIR}:${PATH}
 
 #   Additional user provided arguments
 SAM_LIST="$2"
