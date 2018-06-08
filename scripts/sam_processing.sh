@@ -112,7 +112,7 @@ function main() {
     #   Create the header for the mapping stats summary file
     echo -e "Sample name\tTotal reads\tPercent mapped\tPercent paired\tPercent singletons\tFraction with mate mapped to different chr" > "${out_dir}/SAMtools/Statistics/${project}_mapping_summary_unfinished.txt"
     #   Process our SAM files using SAMTools
-    parallel SAMToolsProcessing {} "${ref_seq}" "${out_dir}" "${project}" :::: "${sam_list}"
+    parallel samProcessing {} "${ref_seq}" "${out_dir}" "${project}" :::: "${sam_list}"
     #   Sort the mapping stats summary file
     echo -e "Sample name\tTotal reads\tPercent mapped\tPercent paired\tPercent singletons\tFraction with mate mapped to different chr" > "${out_dir}/SAMtools/Statistics/${project}_mapping_summary.txt"
     tail -n +2 "${out_dir}/SAMtools/Statistics/${project}_mapping_summary_unfinished.txt" | sort >> "${out_dir}/SAMtools/Statistics/${project}_mapping_summary.txt"
