@@ -117,7 +117,7 @@ function main() {
     tail -n +2 "${out_dir}/SAM_Processing/Statistics/${project}_mapping_summary_unfinished.txt" | sort >> "${out_dir}/SAM_Processing/Statistics/${project}_mapping_summary.txt"
     rm "${out_dir}/SAM_Processing/Statistics/${project}_mapping_summary_unfinished.txt"
     #   Create a list of finished files
-    find "${out_dir}/SAM_Processing" -name "*.bam" | sort > "${out_dir}"/SAMtools/"${project}"_BAM_list.txt
+    find "${out_dir}/SAM_Processing" -name "*.bam" | sort > "${out_dir}"/SAM_Processing/"${project}"_BAM_list.txt
     #   Remove intermediate files
     rm -rf "${out_dir}/SAM_Processing/Intermediates"
 }
