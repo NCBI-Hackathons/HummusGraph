@@ -25,11 +25,10 @@ export -f Usage
 if [[ "$#" == 0 ]]; then Usage; fi # Display the usage message and exit
 
 #   Dependencies
-#   Note: this path needs to be changed
 MINIMAP2=$1
 #export PATH=${MINIMAP2}:${PATH}
 
-#   User provided arguments
+#   Additional user provided arguments
 REF=$2
 ASSEMBLY_FA=$3
 OUT_DIR=$4
