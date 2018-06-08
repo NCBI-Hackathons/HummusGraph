@@ -44,9 +44,9 @@ OUT_DIR="$5"
 function makeOutDir() {
     local out_dir="$1"
     #   Check if out directory exists, if not make it
-    mkdir -p "${out_dir}"/SAMtools
     #   Make subdirectories within SAMtools
-    mkdir -p "${out_dir}"/Statistics/Raw_SAM_Stats \
+    mkdir -p "${out_dir}"/SAMtools \
+             "${out_dir}"/Statistics/Raw_SAM_Stats \
              "${out_dir}"/Statistics/Sorted_BAM_Stats \
              "${out_dir}"/Statistics/Finished_BAM_Stats \
              "${out_dir}"/Intermediates/Sorted \
@@ -59,7 +59,7 @@ export -f makeOutDir
 function samProcessing() {
     local sam_file="$1"
     local reference="$2"
-    local out="$3/SAMtools"
+    local out="$3/SAM_Processing"
     local project="$4"
     #   Sample name, taken from full name of SAM file
     sampleName=$(basename "${sam_file}" .sam)
