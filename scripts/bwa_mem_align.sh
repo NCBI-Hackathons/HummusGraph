@@ -30,7 +30,7 @@ export -f Usage
 if [[ "$#" == 0 ]]; then Usage; fi # Display the usage message and exit
 
 #   Dependencies
-#   1) samtools
+#   1) bwa
 #   2) parallel
 DEP_DIR="$1"
 export PATH=${DEP_DIR}:${PATH}
