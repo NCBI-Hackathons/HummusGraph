@@ -47,7 +47,7 @@ function alignment() {
     #   Sample name taken from full name of FASTA file
     sample_name=$(basename "${reads}" .fa.gz)
     #   Align using BWA MEM
-    bwa mem "${reference}" "${reads}" > "${out_dir}"/"${sample_name}".sam
+    bwa mem -t 8 "${reference}" "${reads}" > "${out_dir}"/"${sample_name}".sam
 }
 
 export -f alignment
