@@ -7,11 +7,14 @@ set -o pipefail
 
 function Usage() {
     echo -e "\
-Usage: ./minimap2_full_genome-asm5.sh [Samtools] [REF] \n\
+Usage: ./minimap2_full_genome-asm5.sh [DEP_DIR] [REF] \n\
 \n\
 Where: \n\
-    1) [Samtools] is the full filepath to the executable script/program
+    1) [DEP_DIR] is the full filepath to the directory containing dependencies (i.e. /path/to/bin)
     2) [REF] is the full filepath to the reference.fa file
+
+Dependencies: \n\
+    1) samtools
 " >&2
     exit 1
 }
@@ -22,11 +25,11 @@ export -f Usage
 if [[ "$#" == 0 ]]; then Usage; fi # Display the usage message and exit
 
 #   Dependencies
-SAMTOOLS=$1
-#export PATH=${SAMTOOLS}:${PATH}
+DEP_DIR=$1
+export PATH=${DEP_DIR}:${PATH}
 
 #   Additional user provided arguments
 REF=$2
 
 #   Index our reference.fa file
-${SAMTOOLS} faidx "${REF}"
+samtools faidx "${REF}"
