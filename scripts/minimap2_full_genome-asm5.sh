@@ -5,6 +5,7 @@ set -o pipefail
 
 function Usage() {
     echo -e "\
+\n\
 This script takes a concatenated gzipped FASTA file (containing all individuals of interest) and a reference.fa file, aligns using Minimap2, and outputs a SAM file.
 \n\
 Usage: ./minimap2_full_genome-asm5.sh [DEP_DIR] [REF] [CONCAT_ASSEMBLY] [OUT_DIR] \n\
