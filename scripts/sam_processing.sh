@@ -3,18 +3,20 @@
 set -e
 set -o pipefail
 
-#   This script takes in a list of SAM files and outputs BAM files.
 #   Note: script was adapted from Morrell Lab's sequence_handling pipeline (https://github.com/MorrellLAB/sequence_handling)
 #   Not using sequence_handling pipeline directly because it was developed specifically
 #   for MSI UMN high performance computing system (Portable Batch System)
 
 function Usage() {
     echo -e "\
-Usage: ./sam_processing.sh [DEP_DIR] [SAM_LIST] [REFERENCE] [PROJECT] [OUT_DIR] \n\
+\n\
+This script takes in a concatenated SAM file and outputs BAM file aligned to linear reference.
+\n\
+Usage: ./sam_processing.sh [DEP_DIR] [CONCAT_SAM] [REFERENCE] [PROJECT] [OUT_DIR] \n\
 \n\
 Where: \n\
     1) [DEP_DIR] is the full filepath to the directory containing dependencies (i.e. /path/to/bin)
-    2) [SAM_LIST] is a list of full filepaths to sam files
+    2) [CONCAT_SAM] is the full filepath to SAM file (output from aligning a concatenated gzipped FASTA file)
     3) [REFERENCE] is the full filepath to the reference.fa file
     4) [PROJECT] is the name of our project. This will get used to name summary statistic files.
     5) [OUT_DIR] is the full filepath to our output directory
@@ -25,7 +27,6 @@ Where: \n\
 
 Dependencies: \n\
     1) samtools
-    2) parallel
 " >&2
     exit 1
 }
@@ -42,7 +43,7 @@ DEP_DIR="$1"
 export PATH=${DEP_DIR}:${PATH}
 
 #   Additional user provided arguments
-SAM_LIST="$2"
+CONCAT_SAM="$2"
 REFERENCE="$3"
 PROJECT="$4"
 OUT_DIR="$5"
@@ -103,15 +104,15 @@ export -f samProcessing
 
 #   Driver function that runs program
 function main() {
-    local sam_list="$1" # What is our list of samples?
+    local sam_file="$1" # What is our list of samples?
     local out_dir="$2" # Where are we storing our results?
     local ref_seq="$3" # What is our reference sequence?
     local project="$4" # What do we call our results?
     makeOutDir "${out_dir}" # Make our outdirectories
     #   Create the header for the mapping stats summary file
     echo -e "Sample name\tTotal reads\tPercent mapped\tPercent paired\tPercent singletons\tFraction with mate mapped to different chr" > "${out_dir}/SAM_Processing/Statistics/${project}_mapping_summary_unfinished.txt"
-    #   Process our SAM files using SAMTools
-    parallel samProcessing {} "${ref_seq}" "${out_dir}" "${project}" :::: "${sam_list}"
+    #   Process our SAM file using SAMTools
+    samProcessing "${sam_file}" "${ref_seq}" "${out_dir}" "${project}"
     #   Sort the mapping stats summary file
     echo -e "Sample name\tTotal reads\tPercent mapped\tPercent paired\tPercent singletons\tFraction with mate mapped to different chr" > "${out_dir}/SAM_Processing/Statistics/${project}_mapping_summary.txt"
     tail -n +2 "${out_dir}/SAM_Processing/Statistics/${project}_mapping_summary_unfinished.txt" | sort >> "${out_dir}/SAM_Processing/Statistics/${project}_mapping_summary.txt"
@@ -126,4 +127,4 @@ function main() {
 export -f main
 
 #   Run the program
-main "${SAM_LIST}" "${OUT_DIR}" "${REFERENCE}" "${PROJECT}"
+main "${CONCAT_SAM}" "${OUT_DIR}" "${REFERENCE}" "${PROJECT}"
