@@ -33,7 +33,7 @@ if [[ "$#" == 0 ]]; then Usage; fi # Display the usage message and exit
 
 #   Dependencies
 SCRIPTS_DIR=$1
-export PATH=${SCRIPTS_DIR}:${PATH}
+export PATH="${SCRIPTS_DIR}:${PATH}"
 
 #   Additional user provided arguments
 CONCAT_BAM=$2
