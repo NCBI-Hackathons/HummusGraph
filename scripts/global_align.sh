@@ -56,10 +56,10 @@ function prepGlobalAlignment() {
     local out_dir=$4
     sample_name=$(basename "${concat_bam}" .bam)
     #   This perl script adds .sortedWithHeader file extension to output file
-    perl BAM2ALIGNMENT.pl --BAM "${concat_bam}" \
-                          --referenceFasta "${reference}" \
-                          --readsFasta "${concat_fa}" \
-                          --outputFile "${out_dir}"/step1_global_align/intermediates/"${sample_name}"
+    BAM2ALIGNMENT.pl --BAM "${concat_bam}" \
+                     --referenceFasta "${reference}" \
+                     --readsFasta "${concat_fa}" \
+                     --outputFile "${out_dir}"/step1_global_align/intermediates/"${sample_name}"
 }
 
 export -f prepGlobalAlignment
@@ -72,9 +72,9 @@ function checkBAM() {
     #sample_name=$(basename "${concat_bam}" .bam)
     cd "${out_dir}"
     #   Check BAM structural variants and indels
-    perl checkBAM_SVs_and_INDELs.pl --BAM "${concat_bam}" \
-                                    --referenceFasta "${reference}" \
-                                    --readsFasta "${concat_fa}"
+    checkBAM_SVs_and_INDELs.pl --BAM "${concat_bam}" \
+                               --referenceFasta "${reference}" \
+                               --readsFasta "${concat_fa}"
 }
 
 export -f checkBAM
@@ -85,11 +85,11 @@ function findGlobalAlignments() {
     local out_dir=$3
     sample_name=$(basename "${sortedWithHeader_file}" .sortedWithHeader)
     #   This perl script outputs SAM and BAM files
-    perl FIND_GLOBAL_ALIGNMENTS.pl --alignmentsFile "${sortedWithHeader_file}" \
-                                   --referenceFasta "${reference}" \
-                                   --outputFile "${out_dir}"/step1_global_align/"${sample_name}".bam \
-                                   --outputTruncatedReads "${out_dir}"/step1_global_align/"${sample_name}"_truncatedReads.txt \
-                                   --outputReadLengths "${out_dir}"/step1_global_align/"${sample_name}"_readLengths.txt
+    FIND_GLOBAL_ALIGNMENTS.pl --alignmentsFile "${sortedWithHeader_file}" \
+                              --referenceFasta "${reference}" \
+                              --outputFile "${out_dir}"/step1_global_align/"${sample_name}".bam \
+                              --outputTruncatedReads "${out_dir}"/step1_global_align/"${sample_name}"_truncatedReads.txt \
+                              --outputReadLengths "${out_dir}"/step1_global_align/"${sample_name}"_readLengths.txt
 }
 
 export -f findGlobalAlignments
