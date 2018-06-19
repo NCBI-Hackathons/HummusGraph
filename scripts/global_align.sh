@@ -34,6 +34,8 @@ if [[ "$#" == 0 ]]; then Usage; fi # Display the usage message and exit
 #   Dependencies
 SCRIPTS_DIR=$1
 export PATH="${SCRIPTS_DIR}:${PATH}"
+#   Set Perl5 library path
+export PERL5LIB=/home/liuc21/localperl5
 
 #   Additional user provided arguments
 CONCAT_BAM=$2
