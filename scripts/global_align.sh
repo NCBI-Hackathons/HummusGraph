@@ -35,7 +35,7 @@ if [[ "$#" == 0 ]]; then Usage; fi # Display the usage message and exit
 SCRIPTS_DIR=$1
 export PATH="${SCRIPTS_DIR}:${PATH}"
 #   Set Perl5 library path
-export PERL5LIB=/home/liuc21/localperl5
+#export PERL5LIB=/home/liuc21/localperl5
 
 #   Additional user provided arguments
 CONCAT_BAM=$2
@@ -58,7 +58,7 @@ function prepGlobalAlignment() {
     local out_dir=$4
     sample_name=$(basename "${concat_bam}" .bam)
     #   This perl script adds .sortedWithHeader file extension to output file
-    BAM2ALIGNMENT.pl --BAM "${concat_bam}" \
+    perl -I /home/liuc21/localperl5 BAM2ALIGNMENT.pl --BAM "${concat_bam}" \
                      --referenceFasta "${reference}" \
                      --readsFasta "${concat_fa}" \
                      --outputFile "${out_dir}"/step1_global_align/intermediates/"${sample_name}"
@@ -74,7 +74,7 @@ function checkBAM() {
     #sample_name=$(basename "${concat_bam}" .bam)
     cd "${out_dir}"
     #   Check BAM structural variants and indels
-    checkBAM_SVs_and_INDELs.pl --BAM "${concat_bam}" \
+    perl -I /home/liuc21/localperl5 checkBAM_SVs_and_INDELs.pl --BAM "${concat_bam}" \
                                --referenceFasta "${reference}" \
                                --readsFasta "${concat_fa}"
 }
@@ -87,7 +87,7 @@ function findGlobalAlignments() {
     local out_dir=$3
     sample_name=$(basename "${sortedWithHeader_file}" .sortedWithHeader)
     #   This perl script outputs SAM and BAM files
-    FIND_GLOBAL_ALIGNMENTS.pl --alignmentsFile "${sortedWithHeader_file}" \
+    perl -I /home/liuc21/localperl5 FIND_GLOBAL_ALIGNMENTS.pl --alignmentsFile "${sortedWithHeader_file}" \
                               --referenceFasta "${reference}" \
                               --outputFile "${out_dir}"/step1_global_align/"${sample_name}".bam \
                               --outputTruncatedReads "${out_dir}"/step1_global_align/"${sample_name}"_truncatedReads.txt \
@@ -115,4 +115,5 @@ function main() {
 export -f main
 
 #   Run the program
+cd "${SCRIPTS_DIR}"
 main "${CONCAT_BAM}" "${REFERENCE}" "${CONCAT_FA}" "${OUT_DIR}"
