@@ -7,17 +7,21 @@ function Usage() {
     echo -e "\
 This script carries out Step 1: Globally Align All Reads from https://github.com/NCBI-Hackathons/Graph_Genomes_CSHL workflow.
 
-Usage: ./global_align.sh [SCRIPTS_DIR] [CONCAT_BAM] [REFERENCE] [CONCAT_FA] [OUT_DIR] \n\
+Usage: ./global_align.sh [SCRIPTS_DIR] [LOCAL_PERL_LIB] [CONCAT_BAM] [REFERENCE] [CONCAT_FA] [OUT_DIR] \n\
 \n\
 Where: \n\
     1) [SCRIPTS_DIR] is the full filepath to Graph_Genomes_CSHL/scripts directory
-    2) [CONCAT_BAM] is the full filepath to concatenated BAM file
-    3) [REFERENCE] is the full filepath to the reference.fa file
-    4) [CONCAT_FA] is the full filepath to the concatenated FASTA file (same one used to generate the BAM file)
-    5) [OUT_DIR] is the full filepath to our output directory
+    2) [LOCAL_PERL_LIB] is the path to local perl libraries
+        Example: if installed using "cpanm --local-lib=/home/localperl5 Bio::DB::Sam"
+        Use the following path: /home/localperl5/lib/perl5
+    3) [CONCAT_BAM] is the full filepath to concatenated BAM file
+    4) [REFERENCE] is the full filepath to the reference.fa file
+    5) [CONCAT_FA] is the full filepath to the concatenated FASTA file (same one used to generate the BAM file)
+    6) [OUT_DIR] is the full filepath to our output directory
 \n\
 Dependencies: \n\
     1) perl (this should already be installed on most HPC clusters)
+        -
     2) cloned repo of Graph_Genomes_CSHL
 
     If not cloned, run:
@@ -34,14 +38,17 @@ if [[ "$#" == 0 ]]; then Usage; fi # Display the usage message and exit
 #   Dependencies
 SCRIPTS_DIR=$1
 export PATH="${SCRIPTS_DIR}:${PATH}"
-#   Set Perl5 library path
-#export PERL5LIB=/home/liuc21/localperl5
+#   Set Perl5 local library path
+#   Ex: if installed using "cpanm --local-lib=/home/localperl5 Bio::DB::Sam"
+#   Set this path to /home/localperl5/lib/perl5
+LOCAL_PERL_LIB=$2
+export PERL5LIB="${LOCAL_PERL_LIB}:${PERL5LIB}"
 
 #   Additional user provided arguments
-CONCAT_BAM=$2
-REFERENCE=$3
-CONCAT_FA=$4
-OUT_DIR=$5
+CONCAT_BAM=$3
+REFERENCE=$4
+CONCAT_FA=$5
+OUT_DIR=$6
 
 function makeOutDir() {
     local out_dir=$1
@@ -58,7 +65,7 @@ function prepGlobalAlignment() {
     local out_dir=$4
     sample_name=$(basename "${concat_bam}" .bam)
     #   This perl script adds .sortedWithHeader file extension to output file
-    perl -I /home/liuc21/localperl5 BAM2ALIGNMENT.pl --BAM "${concat_bam}" \
+    BAM2ALIGNMENT.pl --BAM "${concat_bam}" \
                      --referenceFasta "${reference}" \
                      --readsFasta "${concat_fa}" \
                      --outputFile "${out_dir}"/step1_global_align/intermediates/"${sample_name}"
@@ -74,7 +81,7 @@ function checkBAM() {
     #sample_name=$(basename "${concat_bam}" .bam)
     cd "${out_dir}"
     #   Check BAM structural variants and indels
-    perl -I /home/liuc21/localperl5 checkBAM_SVs_and_INDELs.pl --BAM "${concat_bam}" \
+    checkBAM_SVs_and_INDELs.pl --BAM "${concat_bam}" \
                                --referenceFasta "${reference}" \
                                --readsFasta "${concat_fa}"
 }
@@ -87,7 +94,7 @@ function findGlobalAlignments() {
     local out_dir=$3
     sample_name=$(basename "${sortedWithHeader_file}" .sortedWithHeader)
     #   This perl script outputs SAM and BAM files
-    perl -I /home/liuc21/localperl5 FIND_GLOBAL_ALIGNMENTS.pl --alignmentsFile "${sortedWithHeader_file}" \
+    FIND_GLOBAL_ALIGNMENTS.pl --alignmentsFile "${sortedWithHeader_file}" \
                               --referenceFasta "${reference}" \
                               --outputFile "${out_dir}"/step1_global_align/"${sample_name}".bam \
                               --outputTruncatedReads "${out_dir}"/step1_global_align/"${sample_name}"_truncatedReads.txt \
