@@ -48,7 +48,7 @@ function alignment() {
     sample_name=$(basename "${concat_assembly}" .fa.gz)
     #   Full genome alignment using minimap2
     #   asm5 is one of Minimap2 presets, change depending on organism population diversity
-    minimap2 -aLx asm10 "${ref}" "${concat_assembly}" > "${out_dir}"/"${sample_name}".sam
+    minimap2 -aLx asm10 "${ref}" "${concat_assembly}" > "${out_dir}"/"${sample_name}"_asm10.sam
 }
 
 export -f alignment
