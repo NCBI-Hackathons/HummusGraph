@@ -64,9 +64,9 @@ function alignment() {
     local match_score="$7"
     local mismatch_penalty="$8"
     local gap_open_penalty="$9"
-    local gap_ext_penalty="$10"
-    local min_peak_DP_align_score="$11"
-    local z_drop_score="$12"
+    local gap_ext_penalty="${10}"
+    local min_peak_DP_align_score="${11}"
+    local z_drop_score="${12}"
     #   Sample name taken from full name of gzipped FASTA file
     sample_name=$(basename "${concat_assembly}" .fa.gz)
     #   Full genome alignment using minimap2
