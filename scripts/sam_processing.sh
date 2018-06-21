@@ -79,7 +79,8 @@ function samProcessing() {
     #   Sort the raw BAM file
     samtools sort "${out_dir}/SAM_Processing/Intermediates/Raw_BAM/${sampleName}_raw.bam" > "${out_dir}/SAM_Processing/Intermediates/Sorted/${sampleName}_sorted.bam"
     #   Create alignment statistics for the sorted BAM file
-    samtools stats "${out_dir}/SAM_Processing/Intermediates/Sorted/${sampleName}_sorted.bam" > "${out_dir}/SAM_Processing/Statistics/Sorted_BAM_Stats/${sampleName}_sorted.txt"
+    #samtools stats "${out_dir}/SAM_Processing/Intermediates/Sorted/${sampleName}_sorted.bam" > "${out_dir}/SAM_Processing/Statistics/Sorted_BAM_Stats/${sampleName}_sorted.txt"
+    samtools flagstat "${out_dir}/SAM_Processing/Intermediates/Sorted/${sampleName}_sorted.bam" > "${out_dir}/SAM_Processing/Statistics/Sorted_BAM_Stats/${sampleName}_sorted.txt"
     #   Deduplicate the sorted BAM file
     samtools rmdup "${out_dir}/SAM_Processing/Intermediates/Sorted/${sampleName}_sorted.bam" "${out_dir}/SAM_Processing/${sampleName}.bam"
     #   Create alignment statistics using SAMTools
