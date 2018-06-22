@@ -13,7 +13,7 @@ Usage: ./stampy_align.sh [DEP_DIR] [REF] \n\
 Where: \n\
     1) [DEP_DIR] is the full filepath to the directory containing dependencies (i.e. /path/to/bin)
     2) [REFERENCE] is the full filepath to the reference.fa file. NOTE: the reference prefix must match the .stidx file generated from stampy_prep_reference.sh
-    3) [CONCAT_FA] is a single concatenated FASTA file (.fa file extension) containing all genome assemblies of interest. NOTE: must have .fa file extension, otherwise script will break.
+    3) [CONCAT_FA] is a single concatenated gzipped FASTA file (.fa.gz file extension) containing all genome assemblies of interest. NOTE: must have .fa.gz file extension, otherwise script will break.
     4) [DIVERGENCE] is our per site substitution rate. Example: for 3% divergence rate, put 0.03 as input argument
     5) [N_THREADS] is the number of threads available (i.e. Processor Cores Per Node). NOTE: this must match number of threads requested when queuing jobs
     6) [OUT_DIR] is the full filepath to our output directory. NOTE: output files will go into ${OUT_DIR}/stampy_mapped. The directory "stampy_mapped" is created in the script, so you only need to specify OUT_DIR
@@ -47,7 +47,7 @@ function stampy_align_se() {
     local n_threads="$4"
     local out_dir="$5"
     #   Generate sample name from concatenated.fa file
-    sample_name=$(basename "${concat_fa}" .fa)
+    sample_name=$(basename "${concat_fa}" .fa.gz)
 
     #   Read map using Stampy
     #       -g is the genome index file, PREFIX.stidx
