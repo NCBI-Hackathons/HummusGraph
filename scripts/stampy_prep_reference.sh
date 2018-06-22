@@ -26,7 +26,6 @@ export -f Usage
 if [[ "$#" == 0 ]]; then Usage; fi # Display the usage message and exit
 
 #   Dependencies
-#   1) minimap2
 DEP_DIR="$1"
 export PATH=${DEP_DIR}:${PATH}
 
