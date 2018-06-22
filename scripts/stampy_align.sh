@@ -62,7 +62,8 @@ function stampy_align_se() {
               -t "${n_threads}" \
               -f sam \
               -o "${out_dir}/stampy_mapped/${sample_name}_${divergence}.sam" \
-              -M "${concat_fa}"
+              -M "${concat_fa}"\
+              --inputformat=fasta
 }
 
 export -f stampy_align_se
