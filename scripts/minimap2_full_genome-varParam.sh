@@ -71,7 +71,8 @@ function alignment() {
     sample_name=$(basename "${concat_assembly}" .fa.gz)
     #   Full genome alignment using minimap2
     #   Modify mapping parameters
-    minimap2 -k"${kmer_size}" \
+    minimap2 -aL \
+             -k"${kmer_size}" \
              -w"${minimizer_win_size}" \
              -A"${match_score}" \
              -B"${mismatch_penalty}" \
