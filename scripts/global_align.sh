@@ -14,7 +14,7 @@ Where: \n\
     2) [LOCAL_PERL_LIB] is the path to local perl libraries
         Example: if installed using "cpanm --local-lib=/home/localperl5 Bio::DB::Sam"
         Use the following path: /home/localperl5/lib/perl5
-    3) [CONCAT_BAM] is the full filepath to concatenated BAM file
+    3) [CONCAT_FILT_BAM] is the full filepath to concatenated BAM file with unmapped reads filtered out
     4) [REFERENCE] is the full filepath to the reference.fa file
     5) [CONCAT_FA] is the full filepath to the concatenated FASTA file (same one used to generate the BAM file)
     6) [OUT_DIR] is the full filepath to our output directory
@@ -45,7 +45,7 @@ LOCAL_PERL_LIB=$2
 export PERL5LIB="${LOCAL_PERL_LIB}:${PERL5LIB}"
 
 #   Additional user provided arguments
-CONCAT_BAM=$3
+CONCAT_FILT_BAM=$3
 REFERENCE=$4
 CONCAT_FA=$5
 OUT_DIR=$6
@@ -59,13 +59,13 @@ function makeOutDir() {
 export -f makeOutDir
 
 function prepGlobalAlignment() {
-    local concat_bam=$1
+    local concat_filt_bam=$1
     local reference=$2
     local concat_fa=$3
     local out_dir=$4
-    sample_name=$(basename "${concat_bam}" .bam)
+    sample_name=$(basename "${concat_filt_bam}" .bam)
     #   This perl script adds .sortedWithHeader file extension to output file
-    BAM2ALIGNMENT.pl --BAM "${concat_bam}" \
+    BAM2ALIGNMENT.pl --BAM "${concat_filt_bam}" \
                      --referenceFasta "${reference}" \
                      --readsFasta "${concat_fa}" \
                      --outputFile "${out_dir}"/step1_global_align/intermediates/"${sample_name}".txt
@@ -90,14 +90,14 @@ export -f findGlobalAlignments
 
 #   Driver function
 function main() {
-    local concat_bam=$1
+    local concat_filt_bam=$1
     local reference=$2
     local concat_fa=$3
     local out_dir=$4
     #   Check if out directories exist, if not make them
     makeOutDir "${out_dir}"
     #   Prepare global alignment
-    prepGlobalAlignment "${concat_bam}" "${reference}" "${concat_fa}" "${out_dir}"
+    prepGlobalAlignment "${concat_filt_bam}" "${reference}" "${concat_fa}" "${out_dir}"
     #   Find global alignment
     findGlobalAlignments "${out_dir}"/step1_global_align/intermediates/"${sample_name}".txt.sortedWithHeader "${reference}" "${out_dir}"
 }
@@ -106,4 +106,4 @@ export -f main
 
 #   Run the program
 cd "${SCRIPTS_DIR}"
-main "${CONCAT_BAM}" "${REFERENCE}" "${CONCAT_FA}" "${OUT_DIR}"
+main "${CONCAT_FILT_BAM}" "${REFERENCE}" "${CONCAT_FA}" "${OUT_DIR}"
