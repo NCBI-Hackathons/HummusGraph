@@ -12,7 +12,7 @@ function Usage() {
 \n\
 This script takes in a list of SAM files and outputs BAM files aligned to reference genome.
 \n\
-Usage: ./sam_processing.sh [DEP_DIR] [SAM_LIST] [REFERENCE] [PROJECT] [OUT_DIR] \n\
+Usage: ./sam_processing_parallel.sh [DEP_DIR] [SAM_LIST] [REFERENCE] [PROJECT] [OUT_DIR] \n\
 \n\
 Where: \n\
     1) [DEP_DIR] is the full filepath to the directory containing dependencies (i.e. /path/to/bin)
