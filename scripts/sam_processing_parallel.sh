@@ -22,7 +22,7 @@ Where: \n\
     5) [OUT_DIR] is the full filepath to our output directory
     \n\
     Example directory tree: if OUT_DIR=/path/to/file, output files will be in
-    OUT_DIR/SAMTools (/path/to/file/SAMTools). The SAMTools directory automatically
+    OUT_DIR/SAM_Processing (/path/to/file/SAM_Processing). The SAM_Processing directory automatically
     gets created within this script.
 
 Dependencies: \n\
