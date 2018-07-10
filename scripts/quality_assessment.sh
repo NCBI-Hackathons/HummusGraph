@@ -11,7 +11,7 @@ set -o pipefail
 function Usage() {
     echo -e "\
 \n\
-This script takes in a list of SAM files and outputs BAM files aligned to reference genome.
+This script runs FastQC on a series of samples and writes a summary table of the results.
 \n\
 Usage: ./quality_assessment.sh [DEP_DIR] [SAMPLE_LIST] [OUT_DIR] [PROJECT] [SIZE] \n\
 \n\
