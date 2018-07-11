@@ -55,6 +55,8 @@ function main() {
     local reference="$1"
     local sample_list="$2"
     local out_dir="$3"
+    #   Check if out directory exists, if not make it
+    mkdir -p "${out_dir}"
     parallel alignment "${reference}" {} "${out_dir}" :::: "${sample_list}"
 }
 
