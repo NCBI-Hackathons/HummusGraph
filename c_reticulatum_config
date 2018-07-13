@@ -580,102 +580,102 @@ VA_VCF=
 #       for information on version requirements and compatibility
 
 #   Do we have GNU parallel installed
-module load parallel/20160822
-#PARALLEL=
-#export PATH=${PARALLEL}:${PATH}
+#module load parallel/20160822
+PARALLEL=/home/liuc21/chaochih/software/bin
+export PATH=${PARALLEL}:${PATH}
 
 #   Do we have the Fastx Toolkit installed?
-module load fastx_toolkit/0.0.14
+#module load fastx_toolkit/0.0.14
 #FASTX_TOOLKIT=
 #export PATH=${FASTX_TOOLKIT}:${PATH}
 
 #   Do we have FastQC installed?
-module load fastqc/0.11.5
+#module load fastqc/0.11.5
 #FASTQC=
 #export PATH=${FASTQC}:${PATH}
 
 #   Do we have Riss-util installed?
-module load riss_util/1.0
+#module load riss_util/1.0
 #RISS_UTIL=
 #export PATH=${RISS_UTIL}:${PATH}
 
 #   Do we have Seqqs installed?
-module load seqqs_ML/3d05375
+#module load seqqs_ML/3d05375
 #SEQQS=
 #export PATH=${SEQQS}:${PATH}
 
 #   Do we have Sickle installed?
-module load sickle_ML/1.33
+#module load sickle_ML/1.33
 #SICKLE=
 #export PATH=${SICKLE}:${PATH}
 
 #   Do we have Scythe installed?
-module load scythe_ML/0.994
-#SCYTHE=
-#export PATH=${SCYTHE}:${PATH}
+#module load scythe_ML/0.994
+SCYTHE=/home/liuc21/chaochih/software/scythe
+export PATH=${SCYTHE}:${PATH}
 
 #   Do we have R installed?
-module load R/3.3.1
+#module load R/3.3.1
 #R=
 #export PATH=${R}:${PATH}
 
 #   Do we have BWA installed?
-module load bwa_ML/0.7.15
+#module load bwa_ML/0.7.15
 #BWA=
 #export PATH=${BWA}:${PATH}
 
 #   Do we have SAMTools installed?
-module load samtools_ML/1.3.1
+#module load samtools_ML/1.3.1
 #SAMTOOLS=
 #export PATH=${SAMTOOLS}:${PATH}
 
 #   What is the full file path for the Picard jar file?
-PICARD_JAR=/panfs/roc/itascasoft/picard/2.9.0/picard.jar
+#PICARD_JAR=/panfs/roc/itascasoft/picard/2.9.0/picard.jar
 
 #   Do we have BEDTools 2.17.0 installed?
-module load bedtools/2.17.0
+#module load bedtools/2.17.0
 #BEDTOOLS=
 #export PATH=${BEDTOOLS}:${PATH}
 
 #   Do we have Java installed?
-module load java/jdk1.8.0_45
+#module load java/jdk1.8.0_45
 #JAVA=
 #export PATH=${JAVA}:${PATH}
 
 #   What is the full file path for the GATK jar file?
-GATK_JAR=/panfs/roc/groups/9/morrellp/public/Software/GATK_ML_3.8.0/GenomeAnalysisTK.jar
+#GATK_JAR=/panfs/roc/groups/9/morrellp/public/Software/GATK_ML_3.8.0/GenomeAnalysisTK.jar
 
 #   Do we have vcftools installed?
-module load vcftools_ML/0.1.14
+#module load vcftools_ML/0.1.14
 #VCFTOOLS=
 #export PATH=${VCFTOOLS}:${PATH}
 
 #   Do we have vcflib installed?
-module load vcflib_ML/1.0.0
+#module load vcflib_ML/1.0.0
 #VCFLIB=
 #export PATH=${VCFLIB}:${PATH}
 
 #   Do we have python 3 installed?
-module load python3_ML/3.6.1
+#module load python3_ML/3.6.1
 #PYTHON3=
 #export PATH=${PYTHON3}:${PATH}
 
 #   Do we have analysis installed?
-module load analysis/0.8.2
+#module load analysis/0.8.2
 #ANALYSIS=
 #export PATH=${ANALYSIS}:${PATH}
 
 #   Do we have bcftools installed?
-module load bcftools/0.2.0
+#module load bcftools/0.2.0
 #BCFTOOLS=
 #export PATH=${BCFTOOLS}:${PATH}
 
 #   Do we have python-epd installed?
-module load python-epd/1.5.2
+#module load python-epd/1.5.2
 #PYTHON-EPD=
 #export PATH=${PYTHON-EPD}:${PATH}
 
 #   Do we have texlive installed?
-module load texlive/20131202
+#module load texlive/20131202
 #TEXLIVE=
 #export PATH=${TEXLIVE}:${PATH}
