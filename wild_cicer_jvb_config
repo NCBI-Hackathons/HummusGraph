@@ -154,39 +154,34 @@ QT_THRESHOLD=
 ##########  	Read_Mapping	  ##########
 ############################################
 
-#   What are our QSub settings for Read_Mapping?
-#       Below are the recommended settings
-#       For large files, it may be necessary to use mesabi
-RM_QSUB="mem=22gb,nodes=1:ppn=16,walltime=24:00:00"
-
 #   Where is our list of trimmed samples?
 #       If you're using the list from Adapter_Trimming
 #       TRIMMED_LIST=${OUT_DIR}/Adapter_Trimming/${PROJECT}_trimmed_adapters.txt
 #       If you're using the list from Quality_Trimming
 #       TRIMMED_LIST=${OUT_DIR}/Quality_Trimming/${PROJECT}_trimmed_quality.txt
 #       Include the full file path.
-TRIMMED_LIST=${OUT_DIR}/Adapter_Trimming/${PROJECT}_trimmed_adapters.txt
+TRIMMED_LIST=/home/liuc21/chaochih/data/jose_confidential/wild_sample_list.txt
 
 #   How are trimmed forward samples named?
 #       If using the Adapter_Trimming handler
 #       FORWARD_TRIMMED=_Forward_ScytheTrimmed.fastq.gz
 #       If using the Quality_Trimming handler
 #       FORWARD_TRIMMED=_R1_trimmed.fastq.gz
-FORWARD_TRIMMED=_Forward_ScytheTrimmed.fastq.gz
+FORWARD_TRIMMED=NA
 
 #   How are trimmed reverse samples named?
 #       If using the Adapter_Trimming handler
 #       REVERSE_TRIMMED=_Reverse_ScytheTrimmed.fastq.gz
 #       If using the Quality_Trimming handler
 #       REVERSE_TRIMMED=_R2_trimmed.fastq.gz
-REVERSE_TRIMMED=_Reverse_ScytheTrimmed.fastq.gz
+REVERSE_TRIMMED=NA
 
 #   How are trimmed single-end samples named?
 #       If using the Adapter_Trimming handler
 #       SINGLES_TRIMMED=_Single_ScytheTrimmed.fastq.gz
 #       If using the Quality_Trimming handler
 #       SINGLES_TRIMMED=_single_trimmed.fastq.gz
-SINGLES_TRIMMED=_Single_ScytheTrimmed.fastq.gz
+SINGLES_TRIMMED=_1b.fastq.gz
 
 #   BWA mem parameters; below are the defaults for BWA mem
 #       Note that you may need to adjust parameters based on species
