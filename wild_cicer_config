@@ -565,9 +565,11 @@ VA_VCF=
 #       Make sure you have access to all '_ML' modules.
 #   If you need to install a dependency from source,
 #       then uncomment the lines for the dependency and the
-#       'export PATH=', and write the full path to the executable
-#       for the program. For example:
-#       PARALLEL=${HOME}/software/parallel-20151122/bin/parallel
+#       'export PATH=', and write the full path to the directory containing
+#       the executable for the program. For example:
+#       If path to executable is: ${HOME}/software/parallel-20151122/bin/parallel
+#       Put the following as the path:
+#       PARALLEL=${HOME}/software/parallel-20151122/bin
 #   If you have a system-wide installation for a program, you can
 #       leave all lines commented out. sequence_handling will find
 #       system-wide installed programs automatically.
@@ -587,8 +589,8 @@ export PATH=${PARALLEL}:${PATH}
 
 #   Do we have FastQC installed?
 #module load fastqc/0.11.5
-#FASTQC=
-#export PATH=${FASTQC}:${PATH}
+FASTQC=/home/liuc21/chaochih/software/bin
+export PATH=${FASTQC}:${PATH}
 
 #   Do we have Riss-util installed?
 #module load riss_util/1.0
