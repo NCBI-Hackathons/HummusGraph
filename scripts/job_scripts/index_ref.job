@@ -1,0 +1,25 @@
+#!/bin/bash
+#PBS -l mem=22gb,nodes=1:ppn=16,walltime=02:00:00
+#PBS -m abe
+#PBS -M liux1299@umn.edu
+#PBS -q lab
+
+#   This script is formatted to submit job scripts to PBS/Torque systems
+#   This script uses BWA and Samtools to index the reference.fa file
+
+set -e
+set -o pipefail
+
+#   Dependencies
+module load bwa/0.7.17
+module load samtools_ML/1.8.0
+
+#   User provided arguments
+REF=/home/morrellp/liux1299/Projects/hummus/data/CDCFrontier_v0.3_C_arietinum_reference.fa
+
+#   Do the work
+#   Index our reference.fa file with bwa
+bwa index "${REF}"
+
+#   Index our reference.fa file with samtools
+samtools faidx "${REF}"
