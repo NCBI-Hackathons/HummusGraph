@@ -1,2 +1,5 @@
 #   Ignore .DS_Store files
 *.DS_Store
+
+#   Ignore dir containing error files
+*error_files
