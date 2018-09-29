@@ -1,0 +1,43 @@
+#!/bin/bash
+#PBS -l mem=22gb,nodes=1:ppn=16,walltime=06:00:00
+#PBS -m abe
+#PBS -M liux1299@umn.edu
+#PBS -q lab
+
+#   This script is formatted to submit job scripts to PBS/Torque systems
+#   This script takes a concatenated gzipped FASTA file (containing all
+#   individuals of interest including reference itself) and aligns to
+#   reference.fa file using Minimap2 and outputs a SAM file.
+
+set -e
+set -o pipefail
+
+#   Dependencies
+module load minimap2/2.10
+
+#   User provided arguments
+REF=/home/morrellp/liux1299/Projects/hummus/data/CDCFrontier_v0.3_C_arietinum_reference.fa
+CONCAT_ASSEMBLY=~/Projects/hummus/data/cicer_all_concatenated.fa.gz
+PROJECT=hummus
+OUT_DIR=~/scratch
+
+#   Create project dir
+#   Check if it exists, if not make it
+mkdir -p "${OUT_DIR}/${PROJECT}"
+
+#   Define functions
+function alignment() {
+    local ref="$1"
+    local concat_assembly="$2"
+    local out_dir="$3"
+    #   Sample name taken from full name of gzipped FASTA file
+    sample_name=$(basename "${concat_assembly}" .fa.gz)
+    #   Full genome alignment using minimap2
+    #   asm10 is one of Minimap2 presets, change depending on organism population diversity
+    minimap2 -aLx asm10 "${ref}" "${concat_assembly}" > "${out_dir}"/"${sample_name}"_asm10.sam
+}
+
+export -f alignment
+
+#   Do the work
+alignment "${REF}" "${CONCAT_ASSEMBLY}" "${OUT_DIR}/${PROJECT}"
